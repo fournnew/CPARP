@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+{% block content %}
+<a href="{{ url_for('dashboard') }}">&larr; Back</a>
+<div class="card" style="max-width:600px">
+  <h3>Add Pharmacy</h3>
+  <form method="post">
+    <label>Pharmacy Name</label>
+    <input name="name" required>
+    <label>Facility</label>
+    <select name="facility_id" required>
+      {% for f in facilities %}
+      <option value="{{ f.id }}">{{ f.name }} ({{ f.shortname }})</option>
+      {% endfor %}
+    </select>
+    <button class="btn">Save</button>
+  </form>
+</div>
+{% endblock %}

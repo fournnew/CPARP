@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="nav">
+  <a href="{{ url_for('logout') }}">Logout</a>
+  <a class="btn" href="{{ url_for('facility_clients') }}">All Clients</a>
+  <a class="btn" href="{{ url_for('facility_reports') }}">Reports</a>
+  <a class="btn" href="{{ url_for('add_client') }}">Add Client</a>
+</div>
+<div class="card">
+  <h3>{{ facility.name if facility else 'Facility' }}</h3>
+  <p>Clients: <b>{{ client_count }}</b></p>
+  <p>Pharmacies: <b>{{ pharm_count }}</b></p>
+</div>
+{% endblock %}

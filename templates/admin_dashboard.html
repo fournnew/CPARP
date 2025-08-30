@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="nav">
+  <a href="{{ url_for('logout') }}">Logout</a>
+  <a class="btn" href="{{ url_for('admin_add_facility') }}">Add Facility</a>
+  <a class="btn" href="{{ url_for('admin_add_pharmacy') }}">Add Pharmacy</a>
+  <a class="btn" href="{{ url_for('add_client') }}">Add Client</a>
+</div>
+<div class="card">
+  <h3>Admin Overview</h3>
+  <p>Facilities: <b>{{ fac_count }}</b></p>
+  <p>Pharmacies: <b>{{ pharm_count }}</b></p>
+  <p>Clients: <b>{{ client_count }}</b></p>
+</div>
+{% endblock %}

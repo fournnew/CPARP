@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block content %}
+<a href="{{ url_for('dashboard') }}">&larr; Back</a>
+<div class="card" style="max-width:700px">
+  <h3>Add Client</h3>
+  <form method="post">
+    {% if role != 'pharmacy' %}
+    <label>Client Name</label>
+    <input name="name" placeholder="e.g. Adeola Balogun">
+    {% else %}
+    <p style="opacity:.8">Pharmacy users cannot view names. Leave name blank.</p>
+    {% endif %}
+    <label>Unique ID</label>
+    <input name="unique_id" placeholder="Facility code + number e.g. GBGH0101" required>
+    <label>Facility</label>
+    <select name="facility_id" required>
+      {% for f in facilities %}
+      <option value="{{ f.id }}">{{ f.name }} ({{ f.shortname }})</option>
+      {% endfor %}
+    </select>
+    <label>Pharmacy (optional)</label>
+    <select name="pharmacy_id">
+      <option value="">-- none --</option>
+      {% for p in pharmacies %}
+      <option value="{{ p.id }}">{{ p.name }}</option>
+      {% endfor %}
+    </select>
+    <button class="btn">Save</button>
+  </form>
+</div>
+{% endblock %}

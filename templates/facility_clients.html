@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block content %}
+<a href="{{ url_for('dashboard') }}">&larr; Back</a>
+<div class="card">
+  <h3>Clients</h3>
+  <table>
+    <thead><tr><th>Name</th><th>Unique ID</th><th>Pharmacy</th></tr></thead>
+    <tbody>
+      {% for c in clients %}
+      <tr>
+        <td>{{ c.name or '—' }}</td>
+        <td>{{ c.unique_id }}</td>
+        <td>{% if c.pharmacy_id %}{{ pharmacies[c.pharmacy_id].name }}{% else %}—{% endif %}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

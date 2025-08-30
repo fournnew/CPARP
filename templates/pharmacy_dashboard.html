@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="nav">
+  <a href="{{ url_for('logout') }}">Logout</a>
+  <a class="btn" href="{{ url_for('pharmacy_refill') }}">Refill</a>
+  <a class="btn" href="{{ url_for('pharmacy_stocks') }}">Stocks</a>
+  <a class="btn" href="{{ url_for('pharmacy_reports') }}">Reports</a>
+  <a class="btn" href="{{ url_for('add_client') }}">Add Client (ID only)</a>
+</div>
+<div class="card">
+  <h3>{{ pharmacy.name if pharmacy else 'Pharmacy' }}</h3>
+  <p>Total Refills: <b>{{ refill_count }}</b></p>
+</div>
+{% endblock %}

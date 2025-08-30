@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block content %}
+<a href="{{ url_for('dashboard') }}">&larr; Back</a>
+<div class="card">
+  <h3>Reports</h3>
+  <p><a class="btn" href="{{ url_for('facility_refill_report') }}">Download Refill Report (Excel)</a></p>
+  <p><a class="btn" href="{{ url_for('facility_stock_report') }}">Download Stock Report (Excel)</a></p>
+</div>
+{% endblock %}

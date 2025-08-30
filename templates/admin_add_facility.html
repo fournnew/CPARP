@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block content %}
+<a href="{{ url_for('dashboard') }}">&larr; Back</a>
+<div class="card" style="max-width:600px">
+  <h3>Add Facility</h3>
+  <form method="post">
+    <label>Name</label>
+    <input name="name" required>
+    <label>Shortname (editable code, e.g. GBGH)</label>
+    <input name="shortname" maxlength="10" required>
+    <button class="btn">Save</button>
+  </form>
+</div>
+{% endblock %}

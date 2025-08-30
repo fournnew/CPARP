@@ -1,0 +1,21 @@
+:root{
+  --brand:#ff8c00;
+  --bg:#121212;
+  --text:#ffffff;
+  --card:#1e1e1e;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:Arial,Helvetica,sans-serif}
+.header{background:var(--brand);padding:14px 20px;color:#fff;font-weight:bold}
+.container{max-width:1100px;margin:20px auto;padding:0 16px}
+.card{background:var(--card);border-radius:10px;padding:18px;margin-bottom:16px}
+.btn{background:var(--brand);border:none;color:#fff;padding:10px 14px;border-radius:6px;cursor:pointer;text-decoration:none}
+.btn:disabled{opacity:.7;cursor:not-allowed}
+input,select{width:100%;padding:10px;margin:8px 0;border-radius:6px;border:1px solid #333;background:#111;color:#fff}
+table{width:100%;border-collapse:collapse;margin-top:10px}
+th,td{border-bottom:1px solid #333;padding:8px;text-align:left}
+a{color:#fff;text-decoration:underline}
+.nav a{margin-right:10px}
+.flash{padding:10px;border-radius:6px;margin:10px 0}
+.flash.ok{background:#1e4620}
+.flash.error{background:#5d1a1a}
