@@ -9,6 +9,7 @@ from io import BytesIO
 from extensions import db
 from models import User, Facility, Pharmacy, Client, Refill, Stock
 from utils import role_required
+from werkzeug.utils import secure_filename  
 
 load_dotenv()
 
@@ -16,6 +17,17 @@ app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL', 'sqlite:///c_refill.db')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.secret_key = os.getenv('SECRET_KEY', 'supersecretkey')
+
+# File upload setup
+UPLOAD_FOLDER = os.path.join(os.getcwd(), 'uploads')
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg'}
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
+if not os.path.exists(UPLOAD_FOLDER):
+    os.makedirs(UPLOAD_FOLDER)
+
+def allowed_file(filename):
+    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 db.init_app(app)
 
@@ -185,6 +197,18 @@ def pharmacy_refill():
         drug = request.form['drug']
         refill_date = request.form['refill_date']
         pharmacy_id = session.get('pharmacy_id')
+
+        # Handle file upload
+        file = request.files.get('upload_file')
+        filename = None
+        if file and allowed_file(file.filename):
+            filename = secure_filename(file.filename)
+            file.save(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+        else:
+            if file and file.filename != '':
+                flash("Invalid file type. Only JPG, JPEG, PNG allowed.", "error")
+        # file uplod complete
+
         client = Client.query.filter_by(unique_id=unique_id).first()
         if not client:
             flash('Client not found', 'error')
