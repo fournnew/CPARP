@@ -6,10 +6,17 @@
   <a class="btn" href="{{ url_for('admin_add_pharmacy') }}">Add Pharmacy</a>
   <a class="btn" href="{{ url_for('add_client') }}">Add Client</a>
 </div>
+
 <div class="card">
   <h3>Admin Overview</h3>
   <p>Facilities: <b>{{ fac_count }}</b></p>
   <p>Pharmacies: <b>{{ pharm_count }}</b></p>
   <p>Clients: <b>{{ client_count }}</b></p>
+</div>
+
+<div class="card">
+  <h3>Reports</h3>
+  <p>Download a complete system-wide report of all facilities, pharmacies, and clients.</p>
+  <a class="btn" href="{{ url_for('admin_full_report') }}">Download Full Report (CSV)</a>
 </div>
 {% endblock %}
