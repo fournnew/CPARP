@@ -4,7 +4,8 @@ from flask import Flask, render_template, request, redirect, url_for, session, s
 from dotenv import load_dotenv
 from passlib.hash import pbkdf2_sha256
 import pandas as pd
-from io import BytesIO
+from io import BytesIO, StringIO
+import csv
 
 from extensions import db
 from models import User, Facility, Pharmacy, Client, Refill, Stock
@@ -267,6 +268,73 @@ def pharmacy_stock_report_download():
         df.to_excel(writer, index=False, sheet_name='Stocks')
     buf.seek(0)
     return send_file(buf, as_attachment=True, download_name='pharmacy_stocks.xlsx', mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+
+# admin report(just added this morning by the way)
+
+@app.route('/admin/report/export/excel')
+@role_required('admin')
+def export_admin_report_excel():
+    facilities = Facility.query.all()
+    pharmacies = Pharmacy.query.all()
+    clients = Client.query.all()
+
+    buf = BytesIO()
+    with pd.ExcelWriter(buf, engine='openpyxl') as writer:
+        # Facilities
+        df_fac = pd.DataFrame([(f.id, f.name, f.shortname) for f in facilities], 
+                              columns=['ID','Name','Shortname'])
+        df_fac.to_excel(writer, index=False, sheet_name='Facilities')
+
+        # Pharmacies
+        df_pharm = pd.DataFrame([(p.id, p.name, p.facility.name if p.facility else None) for p in pharmacies], 
+                                columns=['ID','Name','Facility'])
+        df_pharm.to_excel(writer, index=False, sheet_name='Pharmacies')
+
+        # Clients
+        df_client = pd.DataFrame([(c.id, c.unique_id, c.name, 
+                                   c.facility.name if c.facility else None, 
+                                   c.pharmacy.name if c.pharmacy else None) 
+                                   for c in clients], 
+                                 columns=['ID','Unique ID','Name','Facility','Pharmacy'])
+        df_client.to_excel(writer, index=False, sheet_name='Clients')
+
+    buf.seek(0)
+    return send_file(buf, as_attachment=True, download_name='admin_report.xlsx', mimetype='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+
+
+@app.route('/admin/report/export/csv')
+@role_required('admin')
+def export_admin_report_csv():
+    facilities = Facility.query.all()
+    pharmacies = Pharmacy.query.all()
+    clients = Client.query.all()
+
+    output = StringIO()
+    writer = csv.writer(output)
+
+    # Write header
+    writer.writerow(["Type", "ID", "Name/Unique ID", "Facility", "Pharmacy"])
+
+    # Facilities
+    for f in facilities:
+        writer.writerow(["Facility", f.id, f.name, "-", "-"])
+
+    # Pharmacies
+    for p in pharmacies:
+        writer.writerow(["Pharmacy", p.id, p.name, p.facility.name if p.facility else "-", "-"])
+
+    # Clients
+    for c in clients:
+        writer.writerow([
+            "Client",
+            c.id,
+            c.unique_id,
+            c.facility.name if c.facility else "-",
+            c.pharmacy.name if c.pharmacy else "N/A"
+        ])
+
+    output.seek(0)
+    return send_file(BytesIO(output.getvalue().encode()), mimetype="text/csv", as_attachment=True, download_name="admin_report.csv")
 
 # run run run
 if __name__ == '__main__':
