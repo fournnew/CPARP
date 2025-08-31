@@ -37,6 +37,8 @@ class Refill(db.Model):
     refill_date = db.Column(db.Date, nullable=False, default=datetime.utcnow)
     pharmacy_id = db.Column(db.Integer, db.ForeignKey('pharmacy.id'), nullable=False)
 
+    upload_filename = db.Column(db.String(255), nullable=True)  
+   
 class Stock(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     pharmacy_id = db.Column(db.Integer, db.ForeignKey('pharmacy.id'), nullable=False)
