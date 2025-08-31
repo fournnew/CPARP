@@ -3,18 +3,20 @@
 <a href="{{ url_for('dashboard') }}">&larr; Back</a>
 <div class="card" style="max-width:600px">
   <h3>Refill</h3>
-  <form method="post">
+  <form method="post" enctype="multipart/form-data">
     <label>Client Unique ID</label>
     <input name="unique_id" placeholder="e.g. GBGH0042" required>
     <label>Drug</label>
     <select name="drug" required>
-      <option value="TDF-3TC-DTG">TDF-3TC-DTG</option>
-      <option value="ABC-3TC-DTG">ABC-3TC-DTG</option>
+        <option value="TDF-3TC-DTG">TDF-3TC-DTG</option>
+        <option value="ABC-3TC-DTG">ABC-3TC-DTG</option>
     </select>
     <label>Refill Date</label>
     <input type="date" name="refill_date" required>
+    <label>Upload Prescription / Document</label>
+    <input type="file" name="upload_file" accept="image/*">
     <button class="btn">Save</button>
-  </form>
+</form>
   <p style="opacity:.8">Note: Names are hidden for pharmacy users.</p>
 </div>
 {% endblock %}
